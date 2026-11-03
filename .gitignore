@@ -1,0 +1,29 @@
+# Local Python environments
+.venv/
+.venv*/
+venv/
+
+# Python-generated files
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+.aws/
+
+# Editor and operating system files
+.idea/
+.vscode/
+.DS_Store
+
+# Local agent tooling
+.agents/
+.codex/
