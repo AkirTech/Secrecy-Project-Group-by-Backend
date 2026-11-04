@@ -4,7 +4,7 @@
 
 This directory is reserved for the server-side Group-by contribution to the MPC analytics project.
 
-The component's responsibility is secure grouping and aggregation, integrated with the surrounding backend's data and execution flow. Aggregates discussed so far include COUNT, SUM, and possible later extensions such as MEDIAN; the final supported set has not been fixed.
+The component's responsibility is secure grouping and aggregation, integrated with the surrounding backend's data and execution flow. The library implements COUNT, SUM, MEAN, MIN, MAX, and MEDIAN; the subset exposed through the eventual service remains to be agreed.
 
 The protocol to reproduce, MPC backend integration, input/output representation, API responsibilities, rules for revealing results, and deployment model are proposed in the design plan below and await team confirmation.
 
@@ -41,9 +41,23 @@ using zero-based destination positions and reusable multi-column permutations.
 Run `.venv311/bin/python src/backend/groupby/experiments/test_permutation.py`.
 See the [Chinese interface and scope notes](../../../docs/permutation.zh.md).
 This SPU-sort adapter does not reproduce the paper's specialized permutation
-protocol or its communication guarantees. The original SUM baseline is preserved; aggregate stubs are now in separate files.
+protocol or its communication guarantees. The original SUM baseline is preserved; aggregate implementations are in separate files.
 
 ## Common grouping
 
 See [field mapping and implementation differences (Chinese)](../../../docs/groupby-common.zh.md).
 Run `.venv311/bin/python src/backend/groupby/experiments/test_common.py`.
+
+## Aggregate operators
+
+All six aggregates are available through `backend.groupby.algorithm`. Implementations
+are in `aggregates/`, permutations in `primitives/`, and the reference baseline in
+`baselines/`. Legacy `g_*.py` and permutation imports remain supported. MEAN/MEDIAN return
+`(keys, numerator, denominator, valid)`; other operators return three arrays.
+Run `.venv311/bin/python src/backend/groupby/experiments/test_aggregates.py`.
+These are SPU adaptations with documented differences, not full protocol reproductions.
+
+MIN/MAX/MEDIAN now follow the documented paper-level construction; MEDIAN
+returns twice the median with a constant denominator of 2. Its int32 input
+absolute-value bound is 1073741823. Root-level sum_from_common.py and
+mean_from_common.py forwarding modules were removed; import from aggregates instead.

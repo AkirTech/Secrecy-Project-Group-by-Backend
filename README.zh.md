@@ -34,7 +34,7 @@
 ## 当前状态
 
 已实现 SPU 置换适配器、共同分组，以及采用前缀和、置换和差分的整数 SUM。
-保留分段扫描基线用于对照。COUNT/MEAN/MIN/MAX/MEDIAN 仍为明确的未实现占位。
+保留分段扫描基线用于对照。COUNT/MEAN/MIN/MAX/MEDIAN 均已实现；MEAN/MEDIAN 返回精确整数分子与分母。
 当前交付是记录差异的算法适配，不是恶意安全复现或已部署的后端服务；JOIN 由队友负责。
 
 ## 运行合成数据检查
@@ -53,3 +53,11 @@ python3.11 -m venv .venv311
 
 参见[实施计划](docs/groupby-plan.zh.md)、[调研记录](docs/research-notes.zh.md)
 及[共同分组映射](docs/groupby-common.zh.md)。
+
+## 完整聚合接口
+
+六种聚合现已按职责拆分，原 `g_*.py` 和置换导入路径保持兼容；复用函数统一从 `aggregates/` 导入。详见[聚合接口与目录说明](docs/aggregates.zh.md)。
+运行 `.venv311/bin/python src/backend/groupby/experiments/test_aggregates.py` 验证。
+
+MIN/MAX/MEDIAN 已接入论文高层步骤，MEDIAN 固定返回两倍中位数及分母 2。
+参见[协议映射和接口变化](docs/order-statistics.zh.md)。

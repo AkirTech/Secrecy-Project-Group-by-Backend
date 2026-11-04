@@ -1,7 +1,7 @@
 # 共同分组和 SUM 的文件分工
 
 各聚合位于 `src/backend/groupby/algorithm/g_{sum,count,mean,max,min,median}.py`。
-除 SUM 外，其他聚合仍保留用户原有的 NotImplementedError，不因拆分而声称已实现。
+六种聚合已实现；当前模块与精确分数接口参见 [聚合说明](aggregates.zh.md)。旧路径作为兼容入口。
 `gen_perm.py`、`apply_perm.py`、`apply_inv.py` 各负责一个置换操作；
 `permutation.py` 保留统一导入入口，`_validation.py` 负责公开形状和类型检查。
 
@@ -28,7 +28,7 @@
 
 ## SUM 如何复用
 
-`groupby_sum` 调用 common 后交给 `sum_from_common`，后者也可直接接收已计算的 common。
+`groupby_sum` 调用 common 后交给 `aggregates.sum.sum_from_common`，后者也可直接接收已计算的 common。
 按照论文 Protocol 4.4，先计算全局前缀和，组末尾选择该前缀值，其他位置选择总和；
 应用输出置换后作相邻差分。末尾填充位置因此得到零。
 

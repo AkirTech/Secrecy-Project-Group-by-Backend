@@ -35,7 +35,7 @@ The implementation must distinguish between a functional aggregation baseline an
 
 Implemented SPU permutation adapters, common grouping, and integer SUM using
 prefix sums, permutation and differences. The segmented-scan baseline is retained
-for comparison. COUNT/MEAN/MIN/MAX/MEDIAN remain explicit unimplemented stubs.
+for comparison. COUNT/MEAN/MIN/MAX/MEDIAN are implemented; MEAN and MEDIAN return exact integer numerator/denominator pairs.
 This is an algorithm adaptation with documented differences, not a malicious-security
 reproduction or a deployed backend service. JOIN belongs to a teammate.
 
@@ -57,3 +57,17 @@ acceptance suite under `test/` is not yet implemented.
 
 See [implementation plan](docs/groupby-plan.md), [research notes](docs/research-notes.md),
 and [common grouping mapping (Chinese)](docs/groupby-common.zh.md).
+
+## Aggregate operators
+
+All six aggregates are available through `backend.groupby.algorithm`. Implementations
+are in `aggregates/`, permutations in `primitives/`, and the reference baseline in
+`baselines/`. Legacy `g_*.py` and permutation imports remain supported. MEAN/MEDIAN return
+`(keys, numerator, denominator, valid)`; other operators return three arrays.
+Run `.venv311/bin/python src/backend/groupby/experiments/test_aggregates.py`.
+These are SPU adaptations with documented differences, not full protocol reproductions.
+
+MIN/MAX/MEDIAN now follow the documented paper-level construction; MEDIAN
+returns twice the median with a constant denominator of 2. Its int32 input
+absolute-value bound is 1073741823. Root-level sum_from_common.py and
+mean_from_common.py forwarding modules were removed; import from aggregates instead.

@@ -1,5 +1,2 @@
-"""聚合接口占位，尚未实现。"""
-
-def groupby_median(keys,values,valid):
-    ...
-    raise NotImplementedError("groupby_median is not implemented yet.")
+"""兼容旧导入路径。"""
+from .aggregates.median import groupby_median

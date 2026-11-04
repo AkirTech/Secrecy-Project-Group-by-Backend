@@ -7,7 +7,7 @@ import spu
 from spu.utils.simulation import Simulator, sim_jax
 sys.path.insert(0, str(Path(__file__).resolve().parents[4] / 'src'))
 from backend.groupby.algorithm.g_common import groupby_common
-from backend.groupby.algorithm.sum_from_common import sum_from_common
+from backend.groupby.algorithm.aggregates.sum import sum_from_common
 from backend.groupby.algorithm.g_sum import groupby_sum
 from backend.groupby.algorithm.g_sum_baseline import groupby_sum as baseline
 
