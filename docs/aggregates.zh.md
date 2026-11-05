@@ -19,13 +19,13 @@ COUNT(*) 保留 values 参数以统一入口，但只计有效行。
 | 操作 | 返回值 | 计算方式 |
 | --- | --- | --- |
 | SUM | keys, sums, valid | 前缀和、输出置换、差分 |
-| COUNT | keys, counts, valid | 对有效位应用同一求和构造 |
+| COUNT | keys, counts, valid | 协议 4.2：取有效组末的一基位置，否则取公开容量 N；稳定压紧、相邻作差后用 valid_out 清零填充 |
 | MIN / MAX | keys, extrema, valid | 按键和值排序，选择组首/组尾，应用相应输出置换 |
 | MEAN | keys, numerator, denominator, valid | 精确 SUM/COUNT，不作除法或约分 |
 | MEDIAN | keys, numerator, denominator, valid | 按论文秩协议及 FindZeroOrOne 选择两个中间值 |
 
 MEDIAN 统一返回两倍中位数及分母 2，不公开奇偶性。
-MEAN 的分母为组大小。填充分子为 0；MEAN 填充分母为 1，MEDIAN 所有分母恒为 2；有效位为 0。
+groupby_mean 的分母为组大小。若只需均值，§4.3 的适配入口 groupby_mean_only 在共享状态下以固定轮数求最大公约数并用整数二进制长除法约分，输出精确最简分数；零为 0/1。两种入口均不公开结果。填充分子为 0；MEAN 填充分母为 1，MEDIAN 所有分母恒为 2；有效位为 0。
 所有输出保持输入容量。小数转换只能在结果授权公开后进行。
 
 `sum_from_common`、`count_from_common`、`mean_from_common`、`min_from_common`、

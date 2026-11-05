@@ -57,6 +57,11 @@ are in `aggregates/`, permutations in `primitives/`, and the reference baseline 
 Run `.venv311/bin/python src/backend/groupby/experiments/test_aggregates.py`.
 These are SPU adaptations with documented differences, not full protocol reproductions.
 
+COUNT follows Protocol 4.2 by differencing compacted group-end positions.
+MEAN offers two shared outputs. `groupby_mean` preserves the sum and count,
+while `groupby_mean_only` returns the exact fraction in lowest terms so equal
+means have the same representation across different group sizes (§4.3).
+
 MIN/MAX/MEDIAN now follow the documented paper-level construction; MEDIAN
 returns twice the median with a constant denominator of 2. Its int32 input
 absolute-value bound is 1073741823. Root-level sum_from_common.py and

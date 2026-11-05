@@ -51,5 +51,8 @@
 六种聚合现已按职责拆分，原 `g_*.py` 和置换导入路径保持兼容；复用函数统一从 `aggregates/` 导入。详见[聚合接口与目录说明](../../../docs/aggregates.zh.md)。
 运行 `.venv311/bin/python src/backend/groupby/experiments/test_aggregates.py` 验证。
 
+COUNT 按协议 4.2 对压紧后的组末尾位置作差。MEAN 提供两种秘密共享结果：
+`groupby_mean` 保留总和与计数；`groupby_mean_only` 返回最简分数，同一均值在不同组大小下具有相同表示（§4.3）。
+
 MIN/MAX/MEDIAN 已接入论文高层步骤，MEDIAN 固定返回两倍中位数及分母 2。
 参见[协议映射和接口变化](../../../docs/order-statistics.zh.md)。

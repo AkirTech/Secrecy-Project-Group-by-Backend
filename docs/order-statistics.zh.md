@@ -28,9 +28,9 @@ MIN/MAX 的 from_common 必须接收 `groupby_common(..., sort_values=True)` 的
 ## 显式差异
 
 - 使用同一份按键和值排序的 common 和计数，避免 median 的两个秩重复预处理。
-- COUNT 仍复用 SUM 构造，等价功能不代表复现论文专用 COUNT 原语成本。
+- COUNT 采用协议 4.2 的位置差分，并以输出有效位屏蔽填充。
 - 有效位屏蔽填充；反向秩以秘密有效行数替代论文未填充输入的 m。
-- FindZeroOrOne 用两次相等比较，未采用论文的截断最低位优化。
+- FindZeroOrOne 清除 int32 最低位后与零比较，等价于协议 4.16 的截断判定。
 - FindZeroOrOne 是内部函数，要求每组恰好一个匹配；不对任意外部输入提供恶意合法性检查。
 - GenPerm/ApplyPerm/ApplyInv 仍由 SPU 排序封装，不继承论文的专用协议通信复杂度。
 - 使用半诚实 ABY3，不继承恶意安全证明。

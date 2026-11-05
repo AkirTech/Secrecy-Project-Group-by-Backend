@@ -67,7 +67,19 @@ are in `aggregates/`, permutations in `primitives/`, and the reference baseline 
 Run `.venv311/bin/python src/backend/groupby/experiments/test_aggregates.py`.
 These are SPU adaptations with documented differences, not full protocol reproductions.
 
-MIN/MAX/MEDIAN now follow the documented paper-level construction; MEDIAN
-returns twice the median with a constant denominator of 2. Its int32 input
-absolute-value bound is 1073741823. Root-level sum_from_common.py and
-mean_from_common.py forwarding modules were removed; import from aggregates instead.
+Import `sum_from_common` and `mean_from_common` from their respective aggregate modules.
+
+### Section 4 coverage
+
+The following mapping uses the six aggregates enumerated in the [extended paper, §4](https://www.eprint.mirror.cypherpunks.su/2024/141/1706767899.pdf).
+
+| Paper | Implementation under `src/backend/groupby/algorithm/` |
+| --- | --- |
+| 4.1, common | `common.py` sorts valid rows first and compacts group ends. Secret validity distinguishes a real zero key from padding. |
+| 4.2, COUNT | `aggregates/count.py` permutes one-based endpoint positions and differences adjacent positions. It masks padding because the last valid position may be smaller than capacity. |
+| 4.4, SUM | `aggregates/sum.py` permutes endpoint prefix sums and differences them. |
+| §4.3, MEAN | `aggregates/mean.py` provides the shared sum/count pair via `groupby_mean`. For a mean-only result, `groupby_mean_only` reduces that pair inside MPC using fixed-step Euclidean GCD and integer long division. Equal means always have the same representation. |
+| 4.6 / 4.8, MAX / MIN | `aggregates/max.py` and `aggregates/min.py` select the last or first row after sorting each group by value. |
+| 4.10, MEDIAN | `aggregates/median.py` combines two selections using forward and reverse ranks (4.12 / 4.14 in `protocols/ranks.py`). Protocol 4.16 in `protocols/find_zero_or_one.py` clears the low bit before testing for zero. The result has a constant denominator of 2 and requires absolute input values at most 1073741823. |
+
+The kernels use bounded int32 arithmetic, fixed-capacity outputs, SPU sorting for permutations, and semi-honest ABY3 in local simulation. The paper's malicious-security proof and communication bounds apply to its own protocols.
