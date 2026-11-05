@@ -52,8 +52,12 @@ python3.11 -m venv .venv311
 The version list describes the tested local environment; fresh installation has
 not been verified here. The demo deliberately uses a synthetic reference JOIN
 fixture and reconstructs simulator outputs. It does not implement secure JOIN.
-Only the demo and algorithm checks have been exercised; the complete scenario
-acceptance suite under `test/` is not yet implemented.
+All 30 fixtures under `test/` have now been checked: 14 successful cases through
+SPU simulation and 16 rejected by the synthetic harness before MPC. Run
+`.venv311/bin/python src/backend/groupby/experiments/test_scenarios.py`.
+See the [Chinese test report](reports/scenario-test-report-2026-11-05.zh.md).
+The harness uses a plaintext reference JOIN and is not a production input service
+or a secure JOIN-to-Group-by integration test.
 
 See [implementation plan](docs/groupby-plan.md), [research notes](docs/research-notes.md),
 and [common grouping mapping (Chinese)](docs/groupby-common.zh.md).

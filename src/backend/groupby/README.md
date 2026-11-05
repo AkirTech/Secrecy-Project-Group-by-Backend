@@ -66,3 +66,12 @@ MIN/MAX/MEDIAN now follow the documented paper-level construction; MEDIAN
 returns twice the median with a constant denominator of 2. Its int32 input
 absolute-value bound is 1073741823. Root-level sum_from_common.py and
 mean_from_common.py forwarding modules were removed; import from aggregates instead.
+
+## Full synthetic scenario checks
+
+Run `.venv311/bin/python src/backend/groupby/experiments/test_scenarios.py`
+from the workspace root. All 30 fixtures are checked against the data-use guide:
+14 accepted cases run seven aggregate entry points in SPU ABY3/FM64 simulation;
+16 rejected cases stop at harness input validation. The JOIN oracle is plaintext
+and synthetic-only. This does not validate a deployed CSV service or secure JOIN.
+See the [Chinese test report](../../../reports/scenario-test-report-2026-11-05.zh.md).
