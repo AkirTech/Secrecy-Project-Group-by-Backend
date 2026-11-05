@@ -8,9 +8,7 @@ The overall project aims to reproduce research protocols using an existing MPC l
 
 ## Research context
 
-The background discussion is available in [论文分段总结](https://chatgpt.com/share/6ae87b2a-1d84-83e8-975a-54721fdc508f).
-
-That discussion connects two research directions:
+Previous discussion connects two research directions:
 
 - *Secure Statistical Analysis on Multiple Datasets: Join and Group-By* (CCS 2023): secure relational operator protocols.
 - *SECRECY* (NSDI 2023): secure query execution and optimization across operators.

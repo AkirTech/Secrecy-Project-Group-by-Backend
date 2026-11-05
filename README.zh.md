@@ -8,9 +8,7 @@
 
 ## 研究背景
 
-前期讨论见[《论文分段总结》](https://chatgpt.com/share/6ae87b2a-1d84-83e8-975a-54721fdc508f)。
-
-讨论涉及两项相互补充的研究：
+前期讨论涉及两项相互补充的研究：
 
 - *Secure Statistical Analysis on Multiple Datasets: Join and Group-By*（CCS 2023）：安全关系算子的协议设计。
 - *SECRECY*（NSDI 2023）：安全查询执行及跨算子优化。
